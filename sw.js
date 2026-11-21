@@ -4,7 +4,7 @@
 // app's own files — sales/stock data lives in IndexedDB (see index.html)
 // and is untouched by this file.
 
-const CACHE_NAME = 'my-duka-pos-shell-v71-2026-11-21-181';
+const CACHE_NAME = 'my-duka-pos-shell-v72-2026-11-21-182';
 const SHELL_FILES = [
   './index.html',
   './manifest.json',
@@ -17,7 +17,7 @@ const SHELL_FILES = [
 self.addEventListener('install', (event) => {
   event.waitUntil(
     // cache:'reload' so the offline copy is fetched fresh, never from the browser's HTTP cache.
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(SHELL_FILES.map((u) => new Request(u, { cache: 'reload' }))))
+    caches.open(CACHE_NAME).then((cache) => Promise.all(SHELL_FILES.map((u) => cache.add(new Request(u, { cache: 'reload' })).catch(() => {}))))
   );
   self.skipWaiting();
 });

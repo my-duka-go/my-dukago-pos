@@ -83,16 +83,16 @@ begin
 
   if v_plan = 'large' then
     if p_accept_upgrade and v_admin is not null then
-      update public.shops s set plan = 'xl' where s.id::text = p_shop_id;
+      update public.shops s set plan = 'xlarge' where s.id::text = p_shop_id;
       insert into public.shop_devices (shop_id, device_id, label) values (p_shop_id, v_dev, v_label)
       on conflict (shop_id, device_id) do update
         set status = 'active', last_seen = now(), label = coalesce(excluded.label, public.shop_devices.label),
             over_plan = false, removed_by = null, removed_at = null;
       return jsonb_build_object('ok', true, 'upgraded', true, 'count', v_count + 1,
-                                'limit', public.plan_device_limit('xl'), 'plan', 'xl', 'price', public.plan_monthly_price('xl'));
+                                'limit', public.plan_device_limit('xlarge'), 'plan', 'xlarge', 'price', public.plan_monthly_price('xlarge'));
     end if;
     return jsonb_build_object('ok', false, 'code', 'needs_upgrade', 'count', v_count, 'limit', v_limit,
-                              'plan', v_plan, 'price', public.plan_monthly_price('xl'));
+                              'plan', v_plan, 'price', public.plan_monthly_price('xlarge'));
   end if;
 
   return jsonb_build_object('ok', false, 'code', 'limit', 'count', v_count, 'limit', v_limit, 'plan', v_plan);

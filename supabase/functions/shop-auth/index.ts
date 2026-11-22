@@ -96,7 +96,7 @@ async function devicePreview(shopId: string, deviceId: string) {
   if (mine && mine.status === 'removed') return { ok: false, code: 'needs_admin', count, limit, plan };
   if (count < Number(limit)) return { ok: true, count: count + 1, limit, plan, preview: true };
   if (plan === 'large') {
-    const { data: price } = await admin.rpc('plan_monthly_price', { p_plan: 'xl' });
+    const { data: price } = await admin.rpc('plan_monthly_price', { p_plan: 'xlarge' });
     return { ok: false, code: 'needs_upgrade', count, limit, plan, price };
   }
   return { ok: false, code: 'limit', count, limit, plan };
@@ -233,7 +233,7 @@ const handle = async (req: Request) => {
       if (taken) return json({ ok: false, code: 'pin_taken' }, 409);
       // The shop picks a plan at setup and gets a free trial that starts now. After the trial the usual
       // 7-day grace applies, then the shop is suspended until a payment is confirmed (which sets it 'active').
-      const PLANS = ['small', 'medium', 'large', 'xl'];
+      const PLANS = ['small', 'medium', 'large', 'xlarge', 'wholesale', 'chain', 'xl'];
       const plan = PLANS.includes(String(body.plan || '')) ? String(body.plan) : 'small';
       const trialEnds = new Date(Date.now() + TRIAL_DAYS * 86400000).toISOString();
       if (!ex) {

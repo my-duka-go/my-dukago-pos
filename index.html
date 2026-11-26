@@ -6135,7 +6135,7 @@ html[data-theme="dark"] .modal-overlay{ background:rgba(4,6,9,.55); }
     const setM = m => { st.method = m; document.querySelectorAll('#rfBody .rf-m').forEach(b => b.classList.toggle('active-method', b.dataset.m === m)); };
     document.querySelectorAll('#rfBody .rf-m').forEach(b => b.addEventListener('click', () => setM(b.dataset.m))); setM(st.method);
     upd();
-    acts([{ t: fromReports ? 'Close' : 'Back', f: () => fromReports ? close() : pick() }, { t: 'Refund', main: 1, f: confirm }]);
+    acts([{ t: fromReports ? 'Close' : 'Back', f: () => fromReports ? close() : pick() }, { t: 'All items', f: () => { document.querySelectorAll('#rfBody tbody tr').forEach(tr => { const l = L.lines[+tr.dataset.i], inp = tr.querySelector('input'); if (!inp.disabled) inp.value = l.left; }); upd(); } }, { t: 'Refund', main: 1, f: confirm }]);
     $('rfModal').classList.add('show');
   }
 
